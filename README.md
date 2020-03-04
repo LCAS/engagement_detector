@@ -26,7 +26,7 @@ TODO add git lfs instructions
 ## Parameters
 
 - `image: (default /camera/color/image_raw)` input image
-- `debug_image: (default: true)` wheter to publish the out debug image
+- `debug_image: (default: true)` whether to publish the out debug image
 - `out_image: (default: /engagement_detector/out_image)` the debug image topic
 
 The engagement value is published to the topic `/engagement_detector/value`. On a `GeForce GTX 1060 6GB` GPU the engagement value is published at a rate of about 5 hz.
