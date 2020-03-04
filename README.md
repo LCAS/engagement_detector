@@ -6,6 +6,10 @@ A more detailed description of the approach can be found in:
 *Del Duchetto, Francesco, Paul Baxter, and Marc Hanheide. "Are you still with me? Continuous Engagement Assessment from a Robot's Point of View." arXiv preprint arXiv:2001.03515 (2020).* [https://arxiv.org/abs/2001.03515](https://arxiv.org/abs/2001.03515)
 
 
+## Install
+
+TODO add git lfs instructions
+
 
 ## Launch
 
