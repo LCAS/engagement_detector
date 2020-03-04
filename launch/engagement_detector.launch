@@ -1,0 +1,12 @@
+<launch>
+  <arg name="image" default="/camera/color/image_raw"/>
+  <arg name="debug_image" default="true"/>
+  <arg name="out_image" default="/engagement_detector/out_image"/>
+
+  <node name="engagement_detector" pkg="engagement_detector" type="ros_engagement_detector.py">
+    <param name="image_topic" value="$(arg image)"/>
+    <param name="debug_image" value="$(arg debug_image)"/>
+    <param name="out_image" value="$(arg out_image)"/>
+  </node>
+
+</launch>

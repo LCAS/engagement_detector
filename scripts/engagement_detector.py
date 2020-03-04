@@ -9,15 +9,12 @@ from keras.models import load_model
 from keras.preprocessing import image
 from keras_applications.resnext import ResNeXt50, preprocess_input
 from keras.applications.imagenet_utils import decode_predictions
-
 import tensorflow as tf
+
 # disable most logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-# TODO load resnet in memory
-# TODO load lstm in memory
-# TODO provide methods for using them as a single net
-
+# ROS-independent class for the detector
 class EngagementDetector:
     def __init__(self):
         self._this_dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -59,6 +56,9 @@ class EngagementDetector:
 
     # frames_seq is a sequence of 10 frames 
     def predict(self, frames_seq):
+        if len(frames_seq) != self.window_size:
+            return None
+
         batch = []
 
         frames_seq = [np.array(Image.fromarray(frame).resize((224, 224))) for frame in frames_seq]

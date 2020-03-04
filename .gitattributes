@@ -1,0 +1,1 @@
+models/lstm_10_50_runsigm_runsigm.h5 filter=lfs diff=lfs merge=lfs -text

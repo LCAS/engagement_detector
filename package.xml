@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <name>engagement_detector</name>
+  <version>1.0.0</version>
+  <description>The engagement_detector package</description>
+
+  <maintainer email="fdelduchetto@lincoln.ac.uk">Francesco Del Duchetto</maintainer>
+
+  <license>TODO</license>
+
+  <author email="fdelduchetto@lincoln.ac.uk">Francesco Del Duchetto</author> 
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <run_depend>python-numpy</run_depend>
+  <run_depend>python-imaging</run_depend>
+  <run_depend>python-tensorflow-gpu-pip</run_depend>
+  <run_depend>python-keras-pip</run_depend>
+  <run_depend>python-opencv</run_depend>
+
+  <export/>
+</package>
