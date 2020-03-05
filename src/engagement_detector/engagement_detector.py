@@ -20,7 +20,9 @@ class EngagementDetector:
         self._this_dir_path = os.path.dirname(os.path.realpath(__file__))
 
         self.resNet = None
+        self.resNet_graph = None
         self.lstm = None
+        self.lstm_graph = None
         self.window_size = 0
 
         # tf settings
@@ -36,6 +38,8 @@ class EngagementDetector:
     def _load_networks(self):
         # load resnet
         self.resNet = ResNeXt50(include_top=False, input_shape=(224, 224, 3),  pooling='max', weights='imagenet', backend = keras.backend, layers = keras.layers, models = keras.models, utils = keras.utils)
+        self.resNet._make_predict_function()
+        self.resNet_graph = tf.get_default_graph()
 
         ##### test resnet in detecting a dog in img
         ##### NOTE: set `include_top=True` above to test this
@@ -50,6 +54,8 @@ class EngagementDetector:
         # load lstm
         model_path = os.path.join(self._this_dir_path, "../../models/lstm_10_50_runsigm_runsigm.h5")
         self.lstm = load_model(model_path)
+        self.lstm._make_predict_function()
+        self.lstm_graph = tf.get_default_graph()
 
         # this model is trained to detect engagement on 10 frames
         self.window_size = 10   # frames
@@ -65,10 +71,12 @@ class EngagementDetector:
         batch = preprocess_input(np.array(frames_seq), backend = keras.backend, layers = keras.layers, models = keras.models, utils = keras.utils)
 
         # extract features with resnet
-        features = self.resNet.predict_on_batch(batch)
+        with self.resNet_graph.as_default():
+            features = self.resNet.predict_on_batch(batch)
 
         # predict engagement with lstm
-        prediction = self.lstm.predict(features[np.newaxis,:])
+        with self.lstm_graph.as_default():
+            prediction = self.lstm.predict(features[np.newaxis,:])
 
         return prediction
 

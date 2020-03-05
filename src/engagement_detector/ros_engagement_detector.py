@@ -10,6 +10,8 @@ from sensor_msgs.msg import Image
 from engagement_detector import EngagementDetector
 from time_serie_in_image import TimeSerieInImage
 
+from threading import Lock
+
 
 class ROSEngagementDetector():
 
@@ -28,6 +30,7 @@ class ROSEngagementDetector():
 
         self.last_img = None
         self.last_value = 0.0
+        self.image_seq = []
 
     def _img_cb(self, msg):
         try:
@@ -47,6 +50,25 @@ class ROSEngagementDetector():
             self.outImg_pub.publish(out_imgmsg)
 
     def spin(self, hz=10):
+        # to ensure that the seuquence has 10 elements in timer thread 
+        sequence_lock = Lock()
+
+        # the code to execute every tenth of a second (but it can go slower if prediction is not fast enough)
+        def timed_cb(event):
+
+            sequence_lock.acquire()
+            prediction = self.detector.predict(self.image_seq)
+            sequence_lock.release()
+            if prediction is None:
+                rospy.logwarn("Could not make a prediction, probably the frame sequence length is not 10.")
+                return
+
+            value = np.squeeze(prediction)
+            self.eng_pub.publish(value)
+            self.last_value = value
+
+        timer = rospy.Timer(rospy.Duration.from_sec(1./hz),  timed_cb, oneshot=False)
+
         rate = rospy.Rate(hz)
 
         rospy.loginfo("Waiting to receive image...")
@@ -54,22 +76,19 @@ class ROSEngagementDetector():
             rate.sleep()
         rospy.loginfo("DONE")
 
-        image_seq = []
+
+        # save images at hz rate
         while not rospy.is_shutdown():
-            image_seq.append(self.last_img.copy())
-
-            if len(image_seq) > 10:
-                image_seq.pop(0) 
-                prediction = self.detector.predict(image_seq)
-                if prediction is None:
-                    rospy.logwarn("Could not make a prediction, probably the frame sequence length is not 10.")
-                    continue 
-
-                value = np.squeeze(prediction)
-                self.eng_pub.publish(value)
-                self.last_value = value
+            sequence_lock.acquire()
+            self.image_seq.append(self.last_img.copy())
+            if len(self.image_seq) > 10:
+                self.image_seq.pop(0)
+            sequence_lock.release()
 
             rate.sleep()
+
+        # stop the timer firing
+        timer.shutdown()
 
 if __name__ == "__main__":
     rospy.init_node("engagement_detector")
