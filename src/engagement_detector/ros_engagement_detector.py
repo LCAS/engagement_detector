@@ -31,6 +31,8 @@ class ROSEngagementDetector():
         self.last_img = None
         self.last_value = 0.0
         self.image_seq = []
+        # to ensure that the sequence has 10 elements in timer thread
+        self.sequence_lock = Lock()
 
     def _img_cb(self, msg):
         try:
@@ -38,10 +40,16 @@ class ROSEngagementDetector():
         except CvBridgeError, e:
             rospy.logerr(e)
 
-        self.last_img = np.asarray(cv_image)
+        last_img = np.asarray(cv_image)
+
+        self.sequence_lock.acquire()
+        self.image_seq.append(last_img.copy())
+        if len(self.image_seq) > 10:
+            self.image_seq.pop(0)
+        self.sequence_lock.release()
 
         if self.plot_in_image:
-            out_img = self.image_plotter.step(self.last_img.copy(), self.last_value)
+            out_img = self.image_plotter.step(last_img.copy(), self.last_value)
             try:
                 out_imgmsg = self.bridge.cv2_to_imgmsg(out_img, "bgr8")
             except CvBridgeError, e:
@@ -50,15 +58,14 @@ class ROSEngagementDetector():
             self.outImg_pub.publish(out_imgmsg)
 
     def spin(self, hz=10):
-        # to ensure that the seuquence has 10 elements in timer thread 
-        sequence_lock = Lock()
 
         # the code to execute every tenth of a second (but it can go slower if prediction is not fast enough)
         def timed_cb(event):
 
-            sequence_lock.acquire()
-            prediction = self.detector.predict(self.image_seq)
-            sequence_lock.release()
+            self.sequence_lock.acquire()
+            tmp_image_seq = self.image_seq
+            self.sequence_lock.release()
+            prediction = self.detector.predict(tmp_image_seq)
             if prediction is None:
                 rospy.logwarn("Could not make a prediction, probably the frame sequence length is not 10.")
                 return
@@ -67,25 +74,14 @@ class ROSEngagementDetector():
             self.eng_pub.publish(value)
             self.last_value = value
 
-        timer = rospy.Timer(rospy.Duration.from_sec(1./hz),  timed_cb, oneshot=False)
-
-        rate = rospy.Rate(hz)
-
-        rospy.loginfo("Waiting to receive image...")
-        while self.last_img is None and not rospy.is_shutdown():
-            rate.sleep()
+        rospy.loginfo("Waiting to receive images...")
+        while len(self.image_seq) < 10 and not rospy.is_shutdown():
+            rospy.Rate(5).sleep()
         rospy.loginfo("DONE")
 
+        timer = rospy.Timer(rospy.Duration.from_sec(1./hz),  timed_cb, oneshot=False)
 
-        # save images at hz rate
-        while not rospy.is_shutdown():
-            sequence_lock.acquire()
-            self.image_seq.append(self.last_img.copy())
-            if len(self.image_seq) > 10:
-                self.image_seq.pop(0)
-            sequence_lock.release()
-
-            rate.sleep()
+        rospy.spin()
 
         # stop the timer firing
         timer.shutdown()
