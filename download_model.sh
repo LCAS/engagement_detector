@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir models
+
 export fileid='1rDOc24g7RB_1U0S7dBU1_MPZDyB629Md'
 export filename='models/lstm_10_50_runsigm_runsigm.h5'
 
