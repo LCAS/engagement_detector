@@ -11,7 +11,7 @@
   <author email="fdelduchetto@lincoln.ac.uk">Francesco Del Duchetto</author> 
 
   <buildtool_depend>catkin</buildtool_depend>
-  
+
   <run_depend>python-numpy</run_depend>
   <run_depend>python-imaging</run_depend>
   <run_depend>python-tensorflow-gpu-pip</run_depend>

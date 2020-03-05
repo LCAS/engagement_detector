@@ -40,7 +40,7 @@ class EngagementDetector:
         ##### test resnet in detecting a dog in img
         ##### NOTE: set `include_top=True` above to test this
         if False:
-            img_path = os.path.join(self._this_dir_path, "../imgs/dog.png")
+            img_path = os.path.join(self._this_dir_path, "../../imgs/dog.png")
             img = image.load_img(img_path, target_size=(224, 224))
             img = image.img_to_array(img)
             x = preprocess_input(np.expand_dims(img.copy(), axis=0), backend = keras.backend, layers = keras.layers, models = keras.models, utils = keras.utils)
@@ -48,7 +48,7 @@ class EngagementDetector:
             print(">> TEST: dog prediction\n", decode_predictions(preds, top=5))
 
         # load lstm
-        model_path = os.path.join(self._this_dir_path, "../models/lstm_10_50_runsigm_runsigm.h5")
+        model_path = os.path.join(self._this_dir_path, "../../models/lstm_10_50_runsigm_runsigm.h5")
         self.lstm = load_model(model_path)
 
         # this model is trained to detect engagement on 10 frames

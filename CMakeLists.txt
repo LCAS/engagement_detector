@@ -11,6 +11,6 @@ catkin_package()
 ## Install ##
 #############
 
-install(DIRECTORY scripts
+install(DIRECTORY launch
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
