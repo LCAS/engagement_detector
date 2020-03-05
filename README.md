@@ -8,7 +8,16 @@ A more detailed description of the approach can be found in:
 
 ## Install
 
-TODO add git lfs instructions
+### Install pip package with dependencies
+
+In a terminal go into the room folder of the package: 
+`cd engagement_detector/`
+
+and install:
+`pip install .`
+
+Then download the keras model of the newtork: 
+`./download_model.sh`
 
 
 ## Launch
@@ -30,6 +39,3 @@ TODO add git lfs instructions
 - `out_image: (default: /engagement_detector/out_image)` the debug image topic
 
 The engagement value is published to the topic `/engagement_detector/value`. On a `GeForce GTX 1060 6GB` GPU the engagement value is published at a rate of about 5 hz.
-
-
-NOTE: This code has been tested on keras==2.2.4, tensorflow-gpu==1.14.0.
