@@ -12,7 +12,7 @@ A more detailed description of the approach can be found in:
 
 1. Install python catkin util: `pip install catkin_pkg`
 
-2. In a terminal go into the room folder of the package: `cd engagement_detector/`
+2. In a terminal go into the root folder of the package: `cd engagement_detector/`
 
 3. and install: `pip install .`
 
