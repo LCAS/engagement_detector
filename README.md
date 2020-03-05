@@ -10,15 +10,15 @@ A more detailed description of the approach can be found in:
 
 ### Install package with dependencies
 
-- Install python catkin util: `pip install catkin_pkg`
+1. Install python catkin util: `pip install catkin_pkg`
 
-- In a terminal go into the room folder of the package: `cd engagement_detector/`
+2. In a terminal go into the room folder of the package: `cd engagement_detector/`
 
- - and install: `pip install .`
+3. and install: `pip install .`
 
-- Then download the keras model of the newtork: `./download_model.sh`
+4. Then download the keras model of the newtork: `./download_model.sh`
 
-- Now, you can build the package in your catkin workspace (i.e. ![http://wiki.ros.org/catkin/Tutorials/create_a_workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)). 
+5. Now, you can build the package in your catkin workspace (i.e. ![http://wiki.ros.org/catkin/Tutorials/create_a_workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)). 
 
 ## Launch
 
