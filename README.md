@@ -24,6 +24,15 @@ A more detailed description of the approach can be found in:
 
 `roslaunch engagement_detectors engagement_detector.launch`  
 
+### Engagement value
+
+The predicted engagment value is published on the topic `/engagement_detector/value`.
+
+### Launch parameters
+
+- `image`: (default `/camera/color/image_raw`) input image
+- `debug_image`: (default: `true`) whether to publish the out debug image
+- `out_image`: (default: `/engagement_detector/out_image`) the debug image topic
 
 ## Real-time visualization of engagement
 
@@ -35,11 +44,5 @@ Single user example            |  Multi users example
 ![](https://github.com/francescodelduchetto/engagement_detector/blob/master/imgs/gif0.gif "Engagement debug")  |  ![](https://github.com/francescodelduchetto/engagement_detector/blob/master/imgs/gif1.gif "Engagement multiusers debug") 
 
 
-
-## Parameters
-
-- `image`: (default `/camera/color/image_raw`) input image
-- `debug_image`: (default: `true`) whether to publish the out debug image
-- `out_image`: (default: `/engagement_detector/out_image`) the debug image topic
 
 The engagement value is published to the topic `/engagement_detector/value`. On a `GeForce GTX 1060 6GB` GPU the engagement value is published at a rate of about 5 hz.
