@@ -29,7 +29,11 @@ A more detailed description of the approach can be found in:
 
 `rosrun image_view image_view image:=/engagement_detector/out_image` will show the camera image with the engagement serie data plotted on it. Something like this:
 
-![alt text](https://github.com/francescodelduchetto/engagement_detector/blob/master/imgs/gif0.gif "Engagement debug")
+
+Single user example            |  Multi users example 
+:-------------------------:|:-------------------------:
+![](https://github.com/francescodelduchetto/engagement_detector/blob/master/imgs/gif0.gif "Engagement debug")  |  ![](https://github.com/francescodelduchetto/engagement_detector/blob/master/imgs/gif1.gif "Engagement multiusers debug") 
+
 
 
 ## Parameters
