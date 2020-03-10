@@ -44,5 +44,4 @@ Single user example            |  Multi users example
 ![](https://github.com/francescodelduchetto/engagement_detector/blob/master/imgs/gif0.gif "Engagement debug")  |  ![](https://github.com/francescodelduchetto/engagement_detector/blob/master/imgs/gif1.gif "Engagement multiusers debug") 
 
 
-
-The engagement value is published to the topic `/engagement_detector/value`. On a `GeForce GTX 1060 6GB` GPU the engagement value is published at a rate of about 5 hz.
+On a `GeForce GTX 1060 6GB` GPU the engagement value is published at a rate of about 5 hz.
