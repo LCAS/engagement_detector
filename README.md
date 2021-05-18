@@ -3,7 +3,7 @@
 ROS package to detect overall users engagement from a robot's ego camera in human-robot interactions.
 
 The approach is detailed in the journal paper: 
-*![Del Duchetto F, Baxter P and Hanheide M (2020) Are You Still With Me? Continuous Engagement Assessment From a Robot's Point of View. Front. Robot. AI 7:116. doi: 10.3389/frobt.2020.00116](https://doi.org/10.3389/frobt.2020.00116)*
+[Del Duchetto F, Baxter P and Hanheide M (2020) Are You Still With Me? Continuous Engagement Assessment From a Robot's Point of View. Front. Robot. AI 7:116. doi: 10.3389/frobt.2020.00116](https://doi.org/10.3389/frobt.2020.00116)
 
 
 ## Install
@@ -18,7 +18,7 @@ The approach is detailed in the journal paper:
 
 4. Then download the keras model of the newtork: `./download_model.sh`
 
-5. Now, you can build the package in your catkin workspace (i.e. ![http://wiki.ros.org/catkin/Tutorials/create_a_workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)). 
+5. Now, you can build the package in your catkin workspace (i.e. [http://wiki.ros.org/catkin/Tutorials/create_a_workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)). 
 
 ## Launch
 
