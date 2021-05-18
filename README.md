@@ -2,8 +2,8 @@
 
 ROS package to detect overall users engagement from a robot's ego camera in human-robot interactions.
 
-A more detailed description of the approach can be found in: 
-*Del Duchetto, Francesco, Paul Baxter, and Marc Hanheide. "Are you still with me? Continuous Engagement Assessment from a Robot's Point of View." arXiv preprint arXiv:2001.03515 (2020).* [https://arxiv.org/abs/2001.03515](https://arxiv.org/abs/2001.03515)
+The approach is detailed in the journal paper: 
+*![Del Duchetto F, Baxter P and Hanheide M (2020) Are You Still With Me? Continuous Engagement Assessment From a Robot's Point of View. Front. Robot. AI 7:116. doi: 10.3389/frobt.2020.00116](https://doi.org/10.3389/frobt.2020.00116)*
 
 
 ## Install
