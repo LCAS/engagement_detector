@@ -22,7 +22,7 @@ The approach is detailed in the journal paper:
 
 ## Launch
 
-`roslaunch engagement_detectors engagement_detector.launch`  
+`roslaunch engagement_detector engagement_detector.launch`  
 
 ### Engagement value
 
