@@ -1,32 +1,42 @@
 #!/usr/bin/env python
 
-import rospy
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image
+from std_msgs.msg import Float32
+from cv_bridge import CvBridge, CvBridgeError
 import cv2
 import numpy as np
-from cv_bridge import CvBridge, CvBridgeError
-from std_msgs.msg import Float32
-from sensor_msgs.msg import Image
-
 from engagement_detector import EngagementDetector
 from time_serie_in_image import TimeSerieInImage
-
 from threading import Lock
 
 
-class ROSEngagementDetector():
+class ROSEngagementDetector(Node):
 
-    def __init__(self, image_topic, plot_in_image=True, out_image_topic="/engagement_detector/out_image"):
+    def __init__(self):
+        super().__init__('engagement_detector')
+        image_topic = node.declare_parameter("image", "/camera/color/image_raw").value
+        plot_in_image = node.declare_parameter("debug_image", True).value
+        out_image_topic = node.declare_parameter("out_image", "engagement_detector/out_image").value
+
         self.plot_in_image = plot_in_image
         self.bridge = CvBridge()
         self.detector = EngagementDetector()
 
-        rospy.Subscriber(image_topic, Image, self._img_cb)
+        self.subscription = self.create_subscription(
+            Image,
+            image_topic,
+            self._img_cb,
+            10
+        )
+        self.subscription  # prevent unused variable warning
 
-        self.eng_pub = rospy.Publisher("/engagement_detector/value", Float32, queue_size=1)
+        self.eng_pub = self.create_publisher(Float32, 'engagement_detector/value', 1)
 
         if self.plot_in_image:
             self.image_plotter = TimeSerieInImage()
-            self.outImg_pub = rospy.Publisher(out_image_topic, Image, queue_size=1)
+            self.outImg_pub = self.create_publisher(Image, out_image_topic, 1)
 
         self.last_img = None
         self.last_value = 0.0
@@ -37,8 +47,8 @@ class ROSEngagementDetector():
     def _img_cb(self, msg):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-        except CvBridgeError, e:
-            rospy.logerr(e)
+        except CvBridgeError as e:
+            self.get_logger().error(e)
 
         last_img = np.asarray(cv_image)
 
@@ -52,47 +62,49 @@ class ROSEngagementDetector():
             out_img = self.image_plotter.step(last_img.copy(), self.last_value)
             try:
                 out_imgmsg = self.bridge.cv2_to_imgmsg(out_img, "bgr8")
-            except CvBridgeError, e:
-                rospy.logerr(e)
+            except CvBridgeError as e:
+                self.get_logger().error(e)
 
             self.outImg_pub.publish(out_imgmsg)
 
+    def timed_cb(self):
+        self.sequence_lock.acquire()
+        tmp_image_seq = self.image_seq
+        self.sequence_lock.release()
+        prediction = self.detector.predict(tmp_image_seq)
+        if prediction is None:
+            self.get_logger().warn("Could not make a prediction, probably the frame sequence length is not 10.")
+            return
+
+        value = np.squeeze(prediction)
+        self.eng_pub.publish(value)
+        self.last_value = value
+
     def spin(self, hz=10):
+        self.get_logger().info("Waiting to receive images...")
+        while len(self.image_seq) < 10 and rclpy.ok():
+            rclpy.sleep(0.2)
+        self.get_logger().info("DONE")
 
-        # the code to execute every tenth of a second (but it can go slower if prediction is not fast enough)
-        def timed_cb(event):
+        timer = self.create_timer(1.0 / hz, self.timed_cb)
 
-            self.sequence_lock.acquire()
-            tmp_image_seq = self.image_seq
-            self.sequence_lock.release()
-            prediction = self.detector.predict(tmp_image_seq)
-            if prediction is None:
-                rospy.logwarn("Could not make a prediction, probably the frame sequence length is not 10.")
-                return
-
-            value = np.squeeze(prediction)
-            self.eng_pub.publish(value)
-            self.last_value = value
-
-        rospy.loginfo("Waiting to receive images...")
-        while len(self.image_seq) < 10 and not rospy.is_shutdown():
-            rospy.Rate(5).sleep()
-        rospy.loginfo("DONE")
-
-        timer = rospy.Timer(rospy.Duration.from_sec(1./hz),  timed_cb, oneshot=False)
-
-        rospy.spin()
+        rclpy.spin(self)
 
         # stop the timer firing
-        timer.shutdown()
+        timer.cancel()
 
-if __name__ == "__main__":
-    rospy.init_node("engagement_detector")
 
-    image = rospy.get_param("~image_topic", "/camera/color/image_raw")
-    debug_image = rospy.get_param("~debug_image", True)
-    out_image = rospy.get_param("~out_image", "/engagement_detector/out_image")
+def main(args=None):
+    rclpy.init(args=args)
 
-    red = ROSEngagementDetector(image_topic=image, plot_in_image=debug_image, out_image_topic=out_image)
-
+    red = ROSEngagementDetector()
+    # Start the engagement detector
     red.spin()
+
+    # Shutdown the ROS2 node
+    rclpy.shutdown()
+
+
+
+if __name__ == '__main__':
+    main()

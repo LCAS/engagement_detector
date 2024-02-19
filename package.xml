@@ -1,22 +1,33 @@
 <?xml version="1.0"?>
-<package>
+<package format="3">
   <name>engagement_detector</name>
   <version>1.0.0</version>
   <description>The engagement_detector package</description>
 
   <maintainer email="fdelduchetto@lincoln.ac.uk">Francesco Del Duchetto</maintainer>
 
-  <license>TODO</license>
+  <license>Apache License 2.0</license>
 
   <author email="fdelduchetto@lincoln.ac.uk">Francesco Del Duchetto</author> 
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <depend>ament_python</depend>
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+  <test_depend>launch_pytest</test_depend>
 
-  <run_depend>python-numpy</run_depend>
-  <run_depend>python-imaging</run_depend>
-  <run_depend>python-tensorflow-gpu-pip</run_depend>
-  <run_depend>python-keras-pip</run_depend>
-  <run_depend>python-opencv</run_depend>
+  <depend>python-numpy</depend>
+  <depend>python-imaging</depend>
+  <depend>python-tensorflow-gpu-pip</depend>
+  <depend>python-keras-pip</depend>
+  <depend>python-opencv</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>rclpy</depend>
+  <depend>cv_bridge</depend>
 
-  <export/>
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
 </package>
