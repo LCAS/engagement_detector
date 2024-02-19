@@ -1,5 +1,5 @@
 {
-  "name": "noetic desktop",
+  "name": "humble desktop",
   "dockerFile": "Dockerfile",
   "runArgs": [
     // "--privileged",
