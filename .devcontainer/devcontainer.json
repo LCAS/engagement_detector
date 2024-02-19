@@ -1,6 +1,7 @@
 {
   "name": "humble desktop",
   "dockerFile": "Dockerfile",
+  //"image": "lcas.lincoln.ac.uk/lcas/devcontainer/engagement_detector:humble-dev",
   "runArgs": [
     // "--privileged",
     // "--network=host"
