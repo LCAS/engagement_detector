@@ -22,12 +22,13 @@ The approach is detailed in the journal paper:
    - Make sure docker is running by launching the docker desktop application
 
 Then:
-2. `git clone https://github.com/LCAS/engagement_detector.git`
-3. Open the folder `engagement_detector` with VSCode in the devcontainer.
+
+1.`git clone https://github.com/LCAS/engagement_detector.git`
+2. Open the folder `engagement_detector` with VSCode in the devcontainer.
 
 ## Launch
 
-1. `roslaunch engagement_detector engagement_detector.launch`
+`roslaunch engagement_detector engagement_detector.launch`
 
 
 ### Engagement value
