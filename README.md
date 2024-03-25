@@ -1,6 +1,6 @@
 # Engagement Detector
 
-ROS package to detect overall users engagement from a robot's ego camera in human-robot interactions.
+ROS 1 package to detect overall users engagement from a robot's ego camera in human-robot interactions. **For ROS 2 version, move to the `humble-dev` branch**.
 
 The approach is detailed in the journal paper: 
 [Del Duchetto F, Baxter P and Hanheide M (2020) Are You Still With Me? Continuous Engagement Assessment From a Robot's Point of View. Front. Robot. AI 7:116. doi: 10.3389/frobt.2020.00116](https://doi.org/10.3389/frobt.2020.00116)
