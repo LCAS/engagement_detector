@@ -9,20 +9,26 @@ The approach is detailed in the journal paper:
 ## Install
 
 ### Install package with dependencies
+1. Make sure you have VSCode installed: https://code.visualstudio.com/download
+2. Make sure you have git installed: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+3. Make sure you have the `Docker` and the `Dev Containers` extension in VSCode installed and working: https://code.visualstudio.com/docs/containers/overview and https://code.visualstudio.com/docs/devcontainers/containers
+    * ensure docker is working, i.e. try `docker run --rm hello-world` and check it succeeds for your user
 
-1. Install python catkin util: `pip install catkin_pkg`
+### Environment
 
-2. In a terminal go into the root folder of the package: `cd engagement_detector/`
+**If you are on a Windows PC the following two additional steps are required:**
 
-3. and install: `pip install .`
+   - Open a terminal(e.g., window's powershell), type `git config --global core.autocrlf false` and press Enter
+   - Make sure docker is running by launching the docker desktop application
 
-4. Then download the keras model of the newtork: `./download_model.sh`
-
-5. Now, you can build the package in your catkin workspace (i.e. [http://wiki.ros.org/catkin/Tutorials/create_a_workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)). 
+Then:
+2. `git clone https://github.com/LCAS/engagement_detector.git`
+3. Open the folder `engagement_detector` with VSCode in the devcontainer.
 
 ## Launch
 
-`roslaunch engagement_detector engagement_detector.launch`  
+1. `roslaunch engagement_detector engagement_detector.launch`
+
 
 ### Engagement value
 
