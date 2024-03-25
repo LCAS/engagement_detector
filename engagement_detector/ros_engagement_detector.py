@@ -6,7 +6,6 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
-import time
 import numpy as np
 from engagement_detector.engagement_detector import EngagementDetector
 from engagement_detector.time_serie_in_image import TimeSerieInImage
@@ -27,7 +26,7 @@ class ROSEngagementDetector(Node):
 
         self.subscription = self.create_subscription(
             Image,
-            image_topic,
+            "/camera/color/image_raw",
             self._img_cb,
             10
         )
@@ -69,6 +68,10 @@ class ROSEngagementDetector(Node):
             self.outImg_pub.publish(out_imgmsg)
 
     def timed_cb(self):
+        if len(self.image_seq) < 10:
+            self.get_logger().warn("Waiting to receive images...")
+            return
+
         self.sequence_lock.acquire()
         tmp_image_seq = self.image_seq
         self.sequence_lock.release()
@@ -77,16 +80,13 @@ class ROSEngagementDetector(Node):
             self.get_logger().warn("Could not make a prediction, probably the frame sequence length is not 10.")
             return
 
-        value = np.squeeze(prediction)
-        self.eng_pub.publish(value)
+        value = np.squeeze(prediction)[()].item()
+        fmsg = Float32()
+        fmsg.data = value
+        self.eng_pub.publish(fmsg)
         self.last_value = value
 
     def spin(self, hz=10):
-        self.get_logger().info("Waiting to receive images...")
-        while len(self.image_seq) < 10 and rclpy.ok():
-            time.sleep(0.2)
-        self.get_logger().info("DONE")
-
         timer = self.create_timer(1.0 / hz, self.timed_cb)
 
         rclpy.spin(self)

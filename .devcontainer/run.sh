@@ -4,7 +4,7 @@ set -e
 
 
 sudo mkdir -p /ws/src && sudo chown -R vscode /ws
-sudo ln -s /models /engagement_detector/models && sudo chown -R vscode /models
+sudo ln -s /engagement_detector/models /models && sudo chown -R vscode /models
 
 ln -s /engagement_detector /ws/src/
 

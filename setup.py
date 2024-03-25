@@ -31,7 +31,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'engagement_detector_node = engagement_detector.ros_engagement_detector:main'
+            'engagement_detector_node = engagement_detector.ros_engagement_detector:main',
+            'webcam_node = engagement_detector.webcam:main',
         ],
     },
 )

@@ -1,11 +1,24 @@
 {
   "name": "humble desktop",
   "dockerFile": "Dockerfile",
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
+  "forwardPorts": [
+    6080
+  ],
+  "portsAttributes": {
+    "6080": {
+      "label": "desktop"
+    }
+  },
   //"image": "lcas.lincoln.ac.uk/lcas/devcontainer/engagement_detector:humble-dev",
   "runArgs": [
     // "--privileged",
     // "--network=host"
-    "--gpus=all"
+    "--privileged",
+    "--shm-size=1g"
+    // "--gpus=all"
   ],
   "postCreateCommand": "bash .devcontainer/run.sh",
   "workspaceMount": "source=${localWorkspaceFolder},target=/${localWorkspaceFolderBasename},type=bind",
