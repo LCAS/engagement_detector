@@ -55,9 +55,7 @@ If you want to visualise the `out_image` topic you can do so by:
 2. open a new terminal and launch `rqt`
 3. select Visualization > Image View. 
 
-## Real-time visualization of engagement
-
-`rosrun image_view image_view image:=/engagement_detector/out_image` will show the camera image with the engagement serie data plotted on it. Something like this:
+## Example visualization of engagement
 
 
 Single user example            |  Multi users example 
