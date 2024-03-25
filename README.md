@@ -23,7 +23,7 @@ The approach is detailed in the journal paper:
 
 Then:
 
-1.`git clone https://github.com/LCAS/engagement_detector.git`
+1. `git clone https://github.com/LCAS/engagement_detector.git`
 2. Open the folder `engagement_detector` with VSCode in the devcontainer.
 
 ## Launch
