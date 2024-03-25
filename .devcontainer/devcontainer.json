@@ -5,7 +5,9 @@
   "runArgs": [
     // "--privileged",
     // "--network=host"
+    "--gpus=all"
   ],
+  "postCreateCommand": "bash .devcontainer/run.sh",
   "workspaceMount": "source=${localWorkspaceFolder},target=/${localWorkspaceFolderBasename},type=bind",
   "workspaceFolder": "/${localWorkspaceFolderBasename}",
   "mounts": [

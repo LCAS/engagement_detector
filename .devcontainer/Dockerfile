@@ -26,7 +26,7 @@ RUN sudo apt install -y git wget python3-pip
 # Rosdep update
 RUN rosdep update
 
-RUN pip3 install -U --user pip && pip3 install --user -U numpy pillow tensorflow keras opencv-python rospkg
+RUN pip3 install -U --user pip && pip3 install --user -U numpy pillow tensorflow==2.15.0 keras keras_applications opencv-python rospkg
 
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc

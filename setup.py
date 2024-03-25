@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+from os import path
+from glob import glob
 from setuptools import setup
 from setuptools import find_packages
 
@@ -13,6 +14,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (path.join('share', package_name), glob(path.join('engagement_detector', '*.py'))),
+        # (path.join('share', "models"), glob(path.join('models', '*.h5'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

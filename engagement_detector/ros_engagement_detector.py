@@ -6,9 +6,10 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
+import time
 import numpy as np
-from engagement_detector import EngagementDetector
-from time_serie_in_image import TimeSerieInImage
+from engagement_detector.engagement_detector import EngagementDetector
+from engagement_detector.time_serie_in_image import TimeSerieInImage
 from threading import Lock
 
 
@@ -16,9 +17,9 @@ class ROSEngagementDetector(Node):
 
     def __init__(self):
         super().__init__('engagement_detector')
-        image_topic = node.declare_parameter("image", "/camera/color/image_raw").value
-        plot_in_image = node.declare_parameter("debug_image", True).value
-        out_image_topic = node.declare_parameter("out_image", "engagement_detector/out_image").value
+        image_topic = self.declare_parameter("image", "/camera/color/image_raw").value
+        plot_in_image = self.declare_parameter("debug_image", True).value
+        out_image_topic = self.declare_parameter("out_image", "engagement_detector/out_image").value
 
         self.plot_in_image = plot_in_image
         self.bridge = CvBridge()
@@ -83,7 +84,7 @@ class ROSEngagementDetector(Node):
     def spin(self, hz=10):
         self.get_logger().info("Waiting to receive images...")
         while len(self.image_seq) < 10 and rclpy.ok():
-            rclpy.sleep(0.2)
+            time.sleep(0.2)
         self.get_logger().info("DONE")
 
         timer = self.create_timer(1.0 / hz, self.timed_cb)

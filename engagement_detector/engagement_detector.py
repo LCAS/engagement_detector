@@ -4,19 +4,21 @@ import os
 import numpy as np
 from PIL import Image
 
-import keras
+import tensorflow.compat.v1.keras as keras
 from keras.models import load_model
 from keras.preprocessing import image
 from keras_applications.resnext import ResNeXt50, preprocess_input
 from keras.applications.imagenet_utils import decode_predictions
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 # disable most logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # ROS-independent class for the detector
 class EngagementDetector:
-    def __init__(self):
+    def __init__(self, test=False):
         self._this_dir_path = os.path.dirname(os.path.realpath(__file__))
 
         self.resNet = None
@@ -32,27 +34,28 @@ class EngagementDetector:
         keras.backend.set_session(sess)
 
         # load the networks in memory
-        self._load_networks()
+        self._load_networks(test=test)
 
 
-    def _load_networks(self):
+    def _load_networks(self, test=False):
         # load resnet
-        self.resNet = ResNeXt50(include_top=False, input_shape=(224, 224, 3),  pooling='max', weights='imagenet', backend = keras.backend, layers = keras.layers, models = keras.models, utils = keras.utils)
+        self.resNet = ResNeXt50(include_top=test, input_shape=(224, 224, 3),  pooling='max', weights='imagenet', backend = keras.backend, layers = keras.layers, models = keras.models, utils = keras.utils)
         self.resNet._make_predict_function()
         self.resNet_graph = tf.get_default_graph()
 
         ##### test resnet in detecting a dog in img
         ##### NOTE: set `include_top=True` above to test this
-        if False:
-            img_path = os.path.join(self._this_dir_path, "../../imgs/dog.png")
+        if test:
+            img_path = os.path.join(self._this_dir_path, "../imgs/dog.png")
             img = image.load_img(img_path, target_size=(224, 224))
             img = image.img_to_array(img)
             x = preprocess_input(np.expand_dims(img.copy(), axis=0), backend = keras.backend, layers = keras.layers, models = keras.models, utils = keras.utils)
             preds = self.resNet.predict(x)
-            print(">> TEST: dog prediction\n", decode_predictions(preds, top=5))
-
+            print("\n\n\n>> TEST: dog prediction\n", decode_predictions(preds, top=5))
+            print("\n\n\n")
+            
         # load lstm
-        model_path = os.path.join(self._this_dir_path, "../../models/lstm_10_50_runsigm_runsigm.h5")
+        model_path = os.path.join(self._this_dir_path, "/models/lstm_10_50_runsigm_runsigm.h5")
         self.lstm = load_model(model_path)
         self.lstm._make_predict_function()
         self.lstm_graph = tf.get_default_graph()
@@ -81,4 +84,4 @@ class EngagementDetector:
         return prediction
 
 if __name__ == "__main__":
-    det = EngagementDetector()
+    det = EngagementDetector(test=True)

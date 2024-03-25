@@ -17,11 +17,11 @@
   <test_depend>python3-pytest</test_depend>
   <test_depend>launch_pytest</test_depend>
 
-  <depend>python-numpy</depend>
-  <depend>python-imaging</depend>
-  <depend>python-tensorflow-gpu-pip</depend>
+  <depend>python3-numpy</depend>
+  <depend>python3-imaging</depend>
+  <depend>python-tensorflow-pip</depend>
   <depend>python-keras-pip</depend>
-  <depend>python-opencv</depend>
+  <depend>python3-opencv</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>rclpy</depend>
